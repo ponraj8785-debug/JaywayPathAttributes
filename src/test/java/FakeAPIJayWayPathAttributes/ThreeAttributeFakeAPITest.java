@@ -1,4 +1,4 @@
-package FakeAPIJayWayPath;
+package FakeAPIJayWayPathAttributes;
 import java.util.List;
 import java.util.Map;
 import org.testng.Assert;
