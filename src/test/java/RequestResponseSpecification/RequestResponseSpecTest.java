@@ -1,6 +1,5 @@
 package RequestResponseSpecification;
-
-import org.checkerframework.checker.index.qual.LessThan;
+import static org.hamcrest.Matchers.*;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -11,15 +10,11 @@ import io.restassured.specification.ResponseSpecification;
 public class RequestResponseSpecTest {
 	
 	
-	RequestSpecification reqSpec;
+	RequestSpecification reqSpec , reqQueryparamSpec , reqSpecInvalidAuth;
 	ResponseSpecification responseSpec;
-	RequestSpecification reqQueryparamSpec;
 	ResponseSpecification responseSpec_401;
-	RequestSpecification reqSpecInvalidAuth;
-	
-	
+
 	@BeforeTest
-	
 	public void setUp() {
 
 	reqSpec= RestAssured.given().log().all()
@@ -37,7 +32,8 @@ public class RequestResponseSpecTest {
 	responseSpec= RestAssured.expect().log().all()
 	    .statusCode(200)
 	    .header("Content-Type","application/json; charset=utf-8")
-	    .header("Server", "cloudflare");
+	    .header("Server", "cloudflare")
+	    .time(lessThan(5000L));
 	
 	reqSpecInvalidAuth= RestAssured.given().log().all()
 			.baseUri("https://gorest.co.in/")
@@ -47,7 +43,9 @@ public class RequestResponseSpecTest {
 	responseSpec_401= RestAssured.expect().log().all()
 		    .statusCode(401)
 		    .header("Content-Type","application/json; charset=utf-8")
-		    .header("Server", "cloudflare");
+		    .header("Server", "cloudflare")
+		    .time(lessThan(5000L))
+		    .body("message",equalTo("Invalid token"));
 	}
 	
 	@Test
@@ -81,8 +79,5 @@ public class RequestResponseSpecTest {
 		.then().log().all()
 		.spec(responseSpec_401);
 	}
-	
-	
-	
 
 }
