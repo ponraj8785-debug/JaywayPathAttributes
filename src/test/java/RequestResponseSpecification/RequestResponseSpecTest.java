@@ -59,7 +59,7 @@ public class RequestResponseSpecTest {
 	@Test
 	public void getSingleUserTest() {
 		reqSpec
-		.get("/public/v2/users/8612641")
+		.get("/public/v2/users/8612623")
 		.then().log().all()
 		.spec(responseSpec);
 	}
